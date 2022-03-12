@@ -3,7 +3,7 @@ import styles from "./Navbar.module.css";
 
 const Navbar = () => {
   return (
-    <nav className={styles.navbar}>
+    <nav data-testid="navbar" className={styles.navbar}>
       <ul>
         <li className={styles.title}>
           <Link to="/">myMoney</Link>
