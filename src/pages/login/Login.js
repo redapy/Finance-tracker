@@ -10,7 +10,11 @@ const Login = () => {
     console.log(email, password);
   };
   return (
-    <form onSubmit={handleSubmit} className={styles["login-form"]}>
+    <form
+      data-testid="login-form"
+      onSubmit={handleSubmit}
+      className={styles["login-form"]}
+    >
       <h2>login</h2>
       <label>
         <span>email:</span>
