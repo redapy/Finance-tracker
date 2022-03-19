@@ -13,14 +13,19 @@ const Signup = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles["signup-form"]}>
-      <h2>sign up</h2>
+    <form
+      data-testid="signup-form"
+      onSubmit={handleSubmit}
+      className={styles["signup-form"]}
+    >
+      <h2>Sign up</h2>
       <label>
         <span>email:</span>
         <input
           type="email"
           onChange={(e) => setEmail(e.target.value)}
           value={email}
+          required
         />
       </label>
       <label>
@@ -29,14 +34,16 @@ const Signup = () => {
           type="password"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
+          required
         />
       </label>
       <label>
-        <span>display name:</span>
+        <span>username:</span>
         <input
           type="text"
           onChange={(e) => setDisplayName(e.target.value)}
           value={displayName}
+          required
         />
       </label>
       <button className="btn" disabled={loading}>
