@@ -11,7 +11,7 @@ jest.mock("../../hooks/useSignOut", () => ({
     logout: mockLogout,
   }),
 }));
-
+// test cases
 describe("Navbar component", () => {
   const MockedNavbar = () => {
     return (
