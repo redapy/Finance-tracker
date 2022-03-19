@@ -1,7 +1,16 @@
 import Navbar from "./Navbar";
+import { fireEvent, render, screen } from "@testing-library/react";
+//Router and context provider
 import { MemoryRouter } from "react-router-dom";
-import { render, screen } from "@testing-library/react";
 import { AuthContextProvider } from "../../context/AuthContext";
+
+//mocking useSignOut
+let mockLogout = jest.fn();
+jest.mock("../../hooks/useSignOut", () => ({
+  useSignOut: () => ({
+    logout: mockLogout,
+  }),
+}));
 
 describe("Navbar component", () => {
   const MockedNavbar = () => {
@@ -33,6 +42,20 @@ describe("Navbar component", () => {
       render(<MockedNavbar />);
       const loginLink = screen.getByText(/login/i);
       expect(loginLink).toBeInTheDocument();
+    });
+    it("Render a logout component", () => {
+      render(<MockedNavbar />);
+      const logoutButton = screen.getByRole("button", { name: "Log out" });
+      expect(logoutButton).toBeInTheDocument();
+    });
+  });
+  describe("clicking the logout button", () => {
+    it("call the logout function", () => {
+      render(<MockedNavbar />);
+      const logoutButton = screen.getByRole("button", { name: "Log out" });
+      fireEvent.click(logoutButton);
+      expect(mockLogout).toHaveBeenCalled();
+      expect(mockLogout).toHaveBeenCalledTimes(1);
     });
   });
 });
