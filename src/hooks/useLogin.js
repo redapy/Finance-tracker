@@ -1,32 +1,26 @@
 import { useEffect, useState } from "react";
-//firebase
-import { auth } from "../firebase/config";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useAuthContext } from "./useAuthContext";
-export const useSignup = () => {
+//firebase
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/config";
+
+export const useLogin = () => {
   const [isCancelled, setIsCancelled] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { dispatch } = useAuthContext();
 
-  const signup = async (email, password, displayName) => {
+  const login = async (email, password) => {
     setError(null);
     setLoading(true);
     try {
-      //sign up the user
-      const userCredential = await createUserWithEmailAndPassword(
+      //Login the user
+      const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-
-      if (!userCredential) {
-        throw Error("Could not sign up the user");
-      }
-      //update the user profile
-      await updateProfile(auth.currentUser, { displayName });
-
-      // the user is automatically loged in, change the user state to be the user object from firebase
+      // update the user state to be the current loged in user
       dispatch({ type: "LOGIN", user: userCredential.user });
 
       //update the state only if the component is not unmounted
@@ -45,6 +39,5 @@ export const useSignup = () => {
   useEffect(() => {
     return () => setIsCancelled(true);
   }, []);
-
-  return { signup, error, loading };
+  return { login, loading, error };
 };

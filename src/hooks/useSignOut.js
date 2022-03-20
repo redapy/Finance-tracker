@@ -21,13 +21,13 @@ export const useSignOut = () => {
       dispatch({ type: "LOGOUT" });
       //update the state only if the component is not unmounted
       if (isCancelled === false) {
-        setLoading(false);
         setError(null);
+        setLoading(false);
       }
     } catch (e) {
       if (isCancelled === false) {
-        setLoading(false);
         setError(e.message);
+        setLoading(false);
         console.log(e.message);
       }
     }
