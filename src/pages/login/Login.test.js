@@ -1,6 +1,19 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Login from "./Login";
 
+//mock useLogin
+let mockLogin = jest.fn();
+let mockLoading = false;
+let mockError = true;
+jest.mock("../../hooks/useLogin", () => ({
+  useLogin: () => ({
+    login: mockLogin,
+    loading: mockLoading,
+    error: mockError,
+  }),
+}));
+
+// Test cases
 describe("Login page", () => {
   describe("Renders", () => {
     it("Renders a login form", () => {
@@ -28,6 +41,20 @@ describe("Login page", () => {
       const button = screen.getByRole("button", { name: "Login" });
       expect(button).toBeInTheDocument();
     });
+
+    it("Renders a loading button when loading is true", () => {
+      mockLoading = true;
+      render(<Login />);
+      const button = screen.getByRole("button", { name: "please wait" });
+      expect(button).toBeInTheDocument();
+    });
+    it("Renders an error message when there is an error", () => {
+      mockLoading = false;
+      mockError = "could not login the user";
+      render(<Login />);
+      const errorMessage = screen.getByText("could not login the user");
+      expect(errorMessage).toBeInTheDocument();
+    });
   });
 
   describe("filling the form", () => {
@@ -43,9 +70,7 @@ describe("Login page", () => {
       fireEvent.change(passwordInput, { target: { value: "1234567" } });
       expect(passwordInput.value).toBe("1234567");
     });
-    it("onSubmit should be called", () => {
-      //mock the console.log
-      const logspy = jest.spyOn(console, "log");
+    it("Login should be called with the user inputs", () => {
       render(<Login />);
       // fill the email input
       const emailInput = screen.getByLabelText(/email:/i);
@@ -53,10 +78,12 @@ describe("Login page", () => {
       //fill the password input
       const passwordInput = screen.getByLabelText(/password:/i);
       fireEvent.change(passwordInput, { target: { value: "1234567" } });
-      // click the submit button
+      // click the login button
       const button = screen.getByRole("button", { name: "Login" });
       fireEvent.click(button);
-      expect(logspy).toHaveBeenCalled();
+      // assert that the login function is called with the correct arguments
+      expect(mockLogin).toBeCalledTimes(1);
+      expect(mockLogin).toBeCalledWith("test@gmail.com", "1234567");
     });
   });
 });
