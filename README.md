@@ -26,4 +26,11 @@
 - The main functionality of the hook is inside an async `signup` function.
   - it accept three parameters: email, passowrd, and a displayName.
   - Inside a `try` block, it wait for the `createUserWithEmailAndPassword` firebase function to signup the user with the provided email and password.
-  - Check if I get a `userCredential` (respond) and then update the user profile using `updateProfile` with the displayName parameter
+  - Check if I get a `userCredential` (respond) and then update the user profile using `updateProfile` with the displayName parameter. Otherwise throw an error.
+  - Firebase automatically login the user, so we need to update the authContext.
+  - dipatch a LOGIN action to update the user state with the `userCredential.user` it got from firebase.
+  - Update the error and loading state only if `isCancelled` is false.
+  - Inside a `catch` block, update the error with the error message from firebase if there is any (only if `isCancelled` is false).
+- Use a cleanup function inside `useEffect` hook to set `isCancelled` to be true whenver the component is unmounted. That way whenever the component is unmounted, the error and loading state won't be updated.
+- The hook returns three values inside an abject: signup function, loading, error.
+### the other hooks follows a simillar pattern. 
