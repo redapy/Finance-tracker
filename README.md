@@ -1,70 +1,36 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Finance-tracker
+- Finance-tracker is a React app where users can manage/follow their transactions.
+- Uses React Context and `useReducer` to manage state.
+- Styled using CSS modules
+- Tested with Jest and React Testing Library
+## Process
+### setup and components
+- Create the different pages needed.
+- Create simple templates for the other components needed
+- setup routes for the pages with **react-router**
+- setup firebase and connect the app with the firebase Authentication server.
+### Create an authentication Context
+- Create an AuthContext using `createContext()` inside a `AuthContext.js` file.
+- In the same file create a custom context provider component named `AuthContextProvider` that provides a context value to its children.
+- Define a state variable and a dispatch function using the `useReducer` hook inside `AuthContextProvider`.
+- Define a reducer function that update the state depending on the action dispatched.
+- Pass an object that contains the state and dispatch function as the value prop.
+- Wrap the `App` component with `AuthContextProvider`.
+- Create a `useAuthContext` custom hook to consume the hook. It return the context value, or an error if the `useContext` hook is not called inside a contextProvider
+### Create custom hooks for signup, signin, and signout the user
+#### `useSignup` hook: 
+- It holds three states:
+  - `isCancelled`: to stop updating the other states when the component is unmounted
+  - `error`: to store any erros we get back from firebase auth
+  - `loading`: Indicates if the the request is being sent to firebase of it's finished
+- The main functionality of the hook is inside an async `signup` function.
+  - it accept three parameters: email, passowrd, and a displayName.
+  - Inside a `try` block, it wait for the `createUserWithEmailAndPassword` firebase function to signup the user with the provided email and password.
+  - Check if I get a `userCredential` (respond) and then update the user profile using `updateProfile` with the displayName parameter. Otherwise throw an error.
+  - Firebase automatically login the user, so we need to update the authContext.
+  - dipatch a LOGIN action to update the user state with the `userCredential.user` it got from firebase.
+  - Update the error and loading state only if `isCancelled` is false.
+  - Inside a `catch` block, update the error with the error message from firebase if there is any (only if `isCancelled` is false).
+- Use a cleanup function inside `useEffect` hook to set `isCancelled` to be true whenver the component is unmounted. That way whenever the component is unmounted, the error and loading state won't be updated.
+- The hook returns three values inside an abject: signup function, loading, error.
+### the other hooks follows a simillar pattern. 
