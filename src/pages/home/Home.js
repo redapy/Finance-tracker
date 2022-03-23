@@ -8,7 +8,11 @@ import { useListenCollection } from "../../hooks/useListenCollection";
 
 const Home = () => {
   const { user } = useAuthContext();
-  const { documents, error } = useListenCollection("transactions");
+  const { documents, error } = useListenCollection(
+    "transactions",
+    ["uid", "==", user.uid],
+    ["createdAt", "desc"]
+  );
   return (
     <div className={styles.container}>
       <div className={styles.content}>
