@@ -44,7 +44,7 @@ export const useListenCollection = (collectionName, _query, _orderBy) => {
     );
 
     return () => unsub();
-  }, [collectionName, queryParams]);
+  }, [collectionName, queryParams, orderByParams]);
 
   return { documents, error };
 };
