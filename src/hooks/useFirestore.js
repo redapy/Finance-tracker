@@ -37,7 +37,7 @@ export const useFirestore = (collectionName) => {
   const [isCancelled, setIsCancelled] = useState(false);
 
   //collection ref and Timestamp
-  const transactionRef = collection(firestore, collectionName);
+  const documentRef = collection(firestore, collectionName);
   const createdAt = Timestamp.fromDate(new Date());
   // helper to make sure the state get updated only if the compoenet is not unmounted
   const dispatchIfNotCancelled = (action) => {
@@ -46,11 +46,11 @@ export const useFirestore = (collectionName) => {
     }
   };
 
-  //add a transaction function
+  //add a document function
   const addDocument = async (document) => {
     dispatch({ type: "IS_PENDING" });
     try {
-      const addedDocument = await addDoc(transactionRef, {
+      const addedDocument = await addDoc(documentRef, {
         ...document,
         createdAt,
       });
