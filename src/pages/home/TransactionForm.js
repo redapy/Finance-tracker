@@ -21,10 +21,11 @@ const TransactionForm = ({ uid }) => {
       setAmount("");
     }
   }, [response.succes]);
+
   return (
     <>
       <h3>Add a Transaction</h3>
-      <form onSubmit={handleSubmit}>
+      <form data-testid="transaction-form" onSubmit={handleSubmit}>
         <label>
           <span>Transaction name:</span>
           <input
@@ -41,9 +42,12 @@ const TransactionForm = ({ uid }) => {
             required
             onChange={(e) => setAmount(e.target.value)}
             value={amount}
+            min="0"
           />
         </label>
-        <button>Add Transaction</button>
+        <button disabled={response.isPending}>Add Transaction</button>
+        {response.error && <p className="error">{response.error}</p>}
+        {response.isPending && <p>Adding...</p>}
       </form>
     </>
   );

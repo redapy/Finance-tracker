@@ -55,6 +55,14 @@
   cursor: pointer;
 }
 
+.sidebar p {
+  width: 100%;
+  margin: 10px auto;
+  text-align: center;
+  color: #fff;
+  font-size: 1em;
+}
+
 /* Transaction list */
 
 .transactions li {
