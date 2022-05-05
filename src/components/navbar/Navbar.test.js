@@ -73,7 +73,8 @@ describe("Navbar component", () => {
       });
     });
   });
-  describe("clicking the logout button", () => {
+
+  describe("Clicking the logout button", () => {
     const value = { user: { displayName: "test" } };
     it("call the logout function", () => {
       customRender(<Navbar />, value);
