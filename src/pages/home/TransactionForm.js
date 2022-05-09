@@ -45,9 +45,8 @@ const TransactionForm = ({ uid }) => {
             min="0"
           />
         </label>
-        <button disabled={response.isPending}>Add Transaction</button>
+        <button disabled={response.isPending}>{response.isPending ? 'Adding...' : 'Add Transaction'}</button>
         {response.error && <p className="error">{response.error}</p>}
-        {response.isPending && <p>Adding...</p>}
       </form>
     </>
   );

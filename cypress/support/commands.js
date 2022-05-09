@@ -8,3 +8,11 @@ Cypress.Commands.add('login', (email, password) => {
     .type(password)
   cy.findByRole('button', { name: /login/i}).click()
 })
+
+Cypress.Commands.add('addTransaction', (name, amount) => {
+  cy.findByRole('textbox', { name: /transaction name:/i })
+    .type(name)
+  cy.findByRole('spinbutton', {  name: /amount \(\$\):/i})
+    .type(amount)
+  cy.findByRole('button', {  name: /add transaction/i}).click()
+})

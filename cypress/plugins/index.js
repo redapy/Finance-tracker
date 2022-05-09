@@ -1,4 +1,4 @@
-const {deleteTestUser} = require('../../src/firebase/adminConfig') 
+const {deleteTestUser, deleteTestTransactions} = require('../../src/firebase/adminConfig') 
 /// <reference types="cypress" />
 /**
  * @type {Cypress.PluginConfig}
@@ -11,6 +11,12 @@ module.exports = (on, config) => {
   on('task', {
     "clear:db": () => {
       return deleteTestUser()
+    }
+  })
+
+  on('task', {
+    "clear:firestore": () => {
+      return deleteTestTransactions()
     }
   })
 }
