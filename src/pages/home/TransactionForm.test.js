@@ -75,7 +75,7 @@ describe("TransactionForm Component", () => {
       mockResponse.isPending = true;
       render(<TransactionForm />);
       const submitButton = screen.getByRole("button", {
-        name: "Add Transaction",
+        name: "Adding...",
       });
       expect(submitButton).toHaveAttribute("disabled");
       expect(mockAddDocument).toBeCalledTimes(0);
